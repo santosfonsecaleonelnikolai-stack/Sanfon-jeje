@@ -15,6 +15,12 @@ Herramienta web que S&F vende a sus clientes. El **administrador** crea las cuen
 - **Módulos**: Formulación, Nuestros productos, Cómo hacer marketing, Máquinas y equipo, Mezclas peligrosas, Equipo mínimo, Calculadora de fórmulas, Usos de los productos y Formas de venta.
 - **Calculadora de fórmulas** (herramienta estrella): escala los ingredientes según los litros a producir, calcula costo total, costo por litro y ganancia/margen, e imprime una hoja de producción con el logo.
 
+## Diseño e imágenes
+
+La interfaz usa un sistema de diseño premium basado en el logo: gradientes verdes, tarjetas con vidrio esmerilado, sombras en capas y animaciones (entradas escalonadas, brillo que sigue al cursor, conteo animado de números, burbujas flotantes en el login, hero con onda y gradiente "respirante"). Respeta `prefers-reduced-motion`.
+
+Las **imágenes** (fondos, banners, ilustraciones de módulos y fotos de producto) son **opcionales**: sin ellas la app muestra gradientes de respaldo; al agregarlas, cada sección se enriquece. Para generarlas, abre **`PROMPTS-IMAGENES.md`**: contiene 16 prompts listos para copiar y pegar en el generador de imágenes de GPT/DALL·E, con el nombre de archivo exacto y el tamaño de cada una. Guarda cada resultado en `public/img/`.
+
 ## Requisitos
 
 - Node.js 20 o superior. **No requiere instalar dependencias** (usa solo módulos nativos de Node).

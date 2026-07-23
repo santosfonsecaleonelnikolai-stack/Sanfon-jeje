@@ -16,6 +16,16 @@ export function money(n) {
   return '$' + Number(n || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+// Imagen con fallback: si el archivo no existe, se elimina y queda el gradiente/emoji de fondo.
+export function coverImg(filename, { cls = 'cover-img', style = '' } = {}) {
+  return `<img class="${cls}" src="/${filename}" alt=""${style ? ` style="${style}"` : ''} loading="lazy" onerror="this.remove()">`;
+}
+
+// Mapea cada módulo a su imagen de portada (el usuario las coloca en public/img/).
+export function moduleImage(slug) {
+  return `img/mod-${slug}.png`;
+}
+
 const HEAD = `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="/logo-syf.png">
@@ -48,8 +58,8 @@ export function shell({ user, activeSlug, title, body }) {
       ${adminLink}
     </nav>
     <div class="foot">
-      <div class="muted" style="color:#fff;opacity:.85">${esc(user.full_name || user.email)}</div>
-      <a href="/logout">Cerrar sesión →</a>
+      <div class="who">${esc(user.full_name || user.email)}</div>
+      <a href="/logout">↩ Cerrar sesión</a>
     </div>
   </aside>
   <main class="content">
@@ -59,7 +69,7 @@ export function shell({ user, activeSlug, title, body }) {
     </div>
     <div class="main">${body}</div>
   </main>
-</div></body></html>`;
+</div><script src="/app.js"></script></body></html>`;
 }
 
 // Página simple sin sidebar (login, errores).

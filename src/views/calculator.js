@@ -28,7 +28,7 @@ export function calculatorPage(user, query = {}) {
   if (!selected) {
     return shell({ user, activeSlug: 'calculadora', title: mod.name,
       body: `<div class="pagehead"><h2>${mod.icon} ${esc(mod.name)}</h2></div>
-        <div class="alert">Aún no hay fórmulas para calcular. Pide al administrador que agregue fórmulas.</div>` });
+        <div class="alert warn">Aún no hay fórmulas para calcular. Pide al administrador que agregue fórmulas.</div>` });
   }
 
   const body = `<div class="pagehead">
@@ -69,8 +69,7 @@ export function calculatorPage(user, query = {}) {
       <div id="resSummary" class="grid cols-3" style="margin-top:16px"></div>
     </div>
 
-    <script>window.__FORMULA__ = ${JSON.stringify(data)};</script>
-    <script src="/app.js"></script>`;
+    <script>window.__FORMULA__ = ${JSON.stringify(data)};</script>`;
 
   return shell({ user, activeSlug: 'calculadora', title: mod.name, body });
 }
