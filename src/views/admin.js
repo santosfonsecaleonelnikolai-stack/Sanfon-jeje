@@ -2,7 +2,7 @@
 
 import { shell, esc, money } from './layout.js';
 import { all, filter, find } from '../db.js';
-import { allModules, userPermissionIds } from '../permissions.js';
+import { allModules, userPermissionIds, PLANS, planById } from '../permissions.js';
 
 function tabs(active) {
   const items = [
@@ -19,15 +19,16 @@ function tabs(active) {
 export function adminUsersPage(user, { flash } = {}) {
   const users = all('profiles').slice().sort((a, b) => (a.created_at || '').localeCompare(b.created_at || ''));
   const rows = users.map((u) => {
-    const nMods = u.role === 'admin' ? 'Todos' : userPermissionIds(u.id).size;
+    const plan = planById(u.plan);
+    const planLabel = u.role === 'admin' ? '<span class="badge grad">Admin</span>'
+      : plan ? `<span class="badge">${esc(plan.name)}</span>` : '<span class="muted" style="font-size:.8rem">Sin plan</span>';
     const status = u.is_active
       ? '<span class="badge bajo">Activo</span>'
       : '<span class="badge alto">Suspendido</span>';
     return `<tr>
       <td><b>${esc(u.full_name || '—')}</b><br><span class="muted" style="font-size:.8rem">${esc(u.email)}</span></td>
-      <td>${u.role === 'admin' ? 'Administrador' : 'Cliente'}</td>
+      <td>${planLabel}</td>
       <td>${status}</td>
-      <td>${nMods} módulos</td>
       <td><a class="btn small secondary" href="/admin/usuarios/${u.id}">Gestionar</a></td>
     </tr>`;
   }).join('');
@@ -37,7 +38,7 @@ export function adminUsersPage(user, { flash } = {}) {
     `<div class="grid" style="grid-template-columns:1.6fr 1fr">
       <div class="card">
         <h3 style="margin:0 0 12px">Usuarios (${users.length})</h3>
-        <table><thead><tr><th>Usuario</th><th>Rol</th><th>Estado</th><th>Acceso</th><th></th></tr></thead>
+        <table><thead><tr><th>Usuario</th><th>Plan</th><th>Estado</th><th></th></tr></thead>
           <tbody>${rows}</tbody></table>
       </div>
       <div class="card">
@@ -95,6 +96,15 @@ export function adminUserDetailPage(admin, target, { flash } = {}) {
 
       <div class="card">
         <h3 style="margin:0 0 12px">Cuenta</h3>
+        ${target.role === 'admin' ? '' : `<form method="POST" action="/admin/usuarios/${target.id}/plan" style="margin-bottom:16px">
+          <div class="field"><label>Plan del cliente</label>
+            <select name="plan">
+              <option value="" ${!target.plan ? 'selected' : ''}>Sin plan</option>
+              ${PLANS.map((p) => `<option value="${p.id}" ${target.plan === p.id ? 'selected' : ''}>${esc(p.name)} — ${money(p.price)}</option>`).join('')}
+            </select>
+          </div>
+          <button class="btn secondary" type="submit">Guardar plan</button>
+        </form>`}
         <form method="POST" action="/admin/usuarios/${target.id}/estado" style="margin-bottom:16px">
           <button class="btn ${target.is_active ? 'danger' : ''}" type="submit">
             ${target.is_active ? 'Suspender acceso' : 'Reactivar acceso'}

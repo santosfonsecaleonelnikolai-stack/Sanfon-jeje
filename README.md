@@ -15,6 +15,27 @@ Herramienta web que S&F vende a sus clientes. El **administrador** crea las cuen
 - **Módulos**: Formulación, Nuestros productos, Cómo hacer marketing, Máquinas y equipo, Mezclas peligrosas, Equipo mínimo, Calculadora de fórmulas, Usos de los productos y Formas de venta.
 - **Calculadora de fórmulas** (herramienta estrella): escala los ingredientes según los litros a producir, calcula costo total, costo por litro y ganancia/margen, e imprime una hoja de producción con el logo.
 
+## Planes y pagos
+
+La plataforma incluye 3 planes de pago único que desbloquean módulos por niveles:
+
+| Plan | Precio | Desbloquea |
+|------|--------|-----------|
+| **Básico** | $499 | Formulación, Usos, Calculadora |
+| **Profesional** | $1,099 | + Productos, Marketing, Equipo mínimo, Mezclas peligrosas |
+| **Premium** | $1,399 | + Máquinas y equipo, Formas de venta (los 9 módulos) |
+
+- Un cliente **sin plan** ve todos los módulos **bloqueados** (con candado) y solo puede navegar a páginas simples y a la de planes. El bloqueo se aplica también en el servidor: intentar entrar a un módulo no incluido redirige a `/planes`.
+- La página de **checkout** (`/planes/checkout`) ofrece varios métodos de pago (tarjeta, transferencia SPEI, efectivo/OXXO, PayPal/Mercado Pago). En esta versión el pago se **simula** y activa el acceso al instante; para cobros reales hay que conectar una pasarela (Stripe / Mercado Pago) con las llaves del negocio — la lógica está aislada en `server.js` (ruta `/planes/contratar`) para facilitarlo.
+- El **administrador** puede asignar o cambiar el plan de cualquier cliente desde su ficha en el panel de administración.
+
+## Rendimiento
+
+- **gzip** en las respuestas HTML.
+- **Caché larga e inmutable** para imágenes y estáticos; carga diferida (`lazy`) de imágenes.
+- Los fondos pesados (login, hero) se sirven como **JPEG optimizado** (el de login pasó de ~1.9 MB a ~115 KB).
+- Respeta `prefers-reduced-motion`.
+
 ## Diseño e imágenes
 
 La interfaz usa un sistema de diseño premium basado en el logo: gradientes verdes, tarjetas con vidrio esmerilado, sombras en capas y animaciones (entradas escalonadas, brillo que sigue al cursor, conteo animado de números, burbujas flotantes en el login, hero con onda y gradiente "respirante"). Respeta `prefers-reduced-motion`.

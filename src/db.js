@@ -21,6 +21,7 @@ const EMPTY_DB = {
   formula_ingredients: [],
   dangerous_mixes: [],
   machines: [],
+  payments: [],
   sessions: [],
 };
 

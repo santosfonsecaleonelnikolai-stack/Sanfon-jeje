@@ -1,7 +1,7 @@
 // Siembra la base de datos: módulos, usuario admin y contenido de ejemplo.
 // Uso: `node src/seed.js` (no borra si ya hay datos) o `node src/seed.js --reset`.
 
-import { load, resetDb, all, insert, find } from './db.js';
+import { load, resetDb, all, insert, find, update } from './db.js';
 import { hashPassword } from './auth.js';
 import { MODULES } from './permissions.js';
 import { FORMULAS, PRODUCTS, DANGEROUS_MIXES, MACHINES, ARTICLES } from './seed-content.js';
@@ -17,6 +17,12 @@ export function seed({ reset = false } = {}) {
   if (db.modules.length === 0) {
     for (const m of MODULES) {
       insert('modules', { ...m, is_enabled: true });
+    }
+  } else {
+    // Migración: asegura que los módulos existentes tengan tier, nombre y orden al día.
+    for (const m of MODULES) {
+      const row = find('modules', (x) => x.slug === m.slug);
+      if (row) update('modules', row.id, { tier: m.tier, sort_order: m.sort_order, name: m.name, description: m.description });
     }
   }
 

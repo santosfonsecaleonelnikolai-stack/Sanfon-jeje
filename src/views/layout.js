@@ -1,6 +1,6 @@
 // Utilidades de render y el layout (shell) con barra lateral y logo.
 
-import { userModules } from '../permissions.js';
+import { modulesWithLock } from '../permissions.js';
 
 export function esc(str) {
   return String(str ?? '')
@@ -35,12 +35,16 @@ const HEAD = `<meta charset="utf-8">
 
 // Página completa con barra lateral (para usuarios autenticados).
 export function shell({ user, activeSlug, title, body }) {
-  const mods = userModules(user);
-  const nav = mods.map((m) => `
-    <a href="/modulos/${m.slug}" class="${activeSlug === m.slug ? 'active' : ''}">
-      <span class="ico">${m.icon || '•'}</span> ${esc(m.name)}
-    </a>`).join('');
+  const mods = modulesWithLock(user);
+  const nav = mods.map((m) => m.locked
+    ? `<a href="/planes" class="locked" title="Desbloquea este módulo con un plan">
+        <span class="ico">${m.icon || '•'}</span> ${esc(m.name)} <span class="lock">🔒</span>
+      </a>`
+    : `<a href="/modulos/${m.slug}" class="${activeSlug === m.slug ? 'active' : ''}">
+        <span class="ico">${m.icon || '•'}</span> ${esc(m.name)}
+      </a>`).join('');
 
+  const planesLink = `<a href="/planes" class="${activeSlug === 'planes' ? 'active' : ''}"><span class="ico">💳</span> Planes y pagos</a>`;
   const adminLink = user.role === 'admin'
     ? `<a href="/admin" class="${activeSlug === 'admin' ? 'active' : ''}"><span class="ico">🛠️</span> Administración</a>`
     : '';
@@ -55,6 +59,7 @@ export function shell({ user, activeSlug, title, body }) {
     <nav class="nav">
       <a href="/panel" class="${activeSlug === 'panel' ? 'active' : ''}"><span class="ico">🏠</span> Inicio</a>
       ${nav}
+      ${planesLink}
       ${adminLink}
     </nav>
     <div class="foot">
