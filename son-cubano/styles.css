@@ -167,7 +167,14 @@ input[type=number] { font: inherit; width: 5.5em; padding: .3em .4em; border: 1p
 .status.err { color: var(--accent); }
 .layer-toggles { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin: 1rem 0; font-size: .95rem; }
 .layer-toggles label { display: flex; gap: .4em; align-items: center; cursor: pointer; }
-.manual { border-top: 1px dashed var(--line); padding-top: 1rem; margin-bottom: .5rem; }
+.source-box { border: 1px solid var(--line); border-radius: 12px; padding: .9rem 1rem .6rem; margin-bottom: .8rem; background: #fffdf8; }
+.source-box h3 { margin: 0 0 .4rem; font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.source-box .note { margin: .6rem 0 .4rem; }
+.audio-box { border-color: var(--contra); background: #f2fbfa; }
+.file-btn { display: inline-block; background: var(--contra); }
+.file-btn:hover { background: #078a85; }
+#audio-el { width: 100%; margin: .6rem 0 .3rem; }
+#audio-status { min-height: 1.4em; }
 .manual a { color: var(--accent); }
 .calib { border-top: 1px dashed var(--line); padding-top: 1rem; }
 .calib-row { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; margin-bottom: .7rem; }

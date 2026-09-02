@@ -141,12 +141,13 @@
   <div class="lesson-text">
     <span class="num">6</span>
     <h2>Ahora con la canción de verdad</h2>
-    <p>Dale play al reproductor. La cuadrícula avanza al ritmo de <strong>“De Camino a la Vereda”</strong>
-      y muestra todas las capas a la vez. Activa o desactiva las que quieras.</p>
-    <p class="note" id="preview-note">Si no tienes sesión iniciada en Spotify, solo se escucharán 30 segundos.
-      Inicia sesión desde el propio reproductor para oír la canción completa.</p>
+    <p>La cuadrícula avanza al ritmo de <strong>“De Camino a la Vereda”</strong> y muestra todas las capas a la vez.
+      Elige cómo quieres que suene: con un archivo de la canción que tengas en tu dispositivo (opción A),
+      con el reproductor de Spotify (opción B) o siguiendo el ritmo por su cuenta mientras la escuchas en otro sitio (opción C).</p>
+    <p class="note">Spotify no permite descargar sus canciones como archivo. Para la opción A necesitas una copia propia,
+      por ejemplo un MP3 comprado en una tienda de música o extraído de un CD.</p>
     <h3>Calibración</h3>
-    <p class="small">El reproductor nos dice en qué segundo va la canción, pero no dónde cae el “1”. Si ves que la cuadrícula no coincide:</p>
+    <p class="small">El audio nos dice en qué segundo va la canción, pero no dónde cae el “1”. Si ves que la cuadrícula no coincide:</p>
     <ol class="small">
       <li>Con la canción sonando, pulsa <strong>“Marcar el 1”</strong> justo cuando sientas el tiempo fuerte.</li>
       <li>Si va rápido o lento, pulsa <strong>“Tap tempo”</strong> varias veces al ritmo.</li>
@@ -154,8 +155,38 @@
     </ol>
   </div>
   <div class="lesson-visual">
-    <div id="spotify-player"></div>
-    <div id="spotify-status" class="status">Cargando reproductor de Spotify…</div>
+    <div class="source-box audio-box">
+      <h3>Opción A · Tu archivo de la canción</h3>
+      <p class="small">Si tienes la canción como archivo (MP3, M4A, WAV…), cárgala aquí. Se reproduce en tu navegador,
+        <strong>no se sube a ningún sitio</strong> y la sincronía es exacta. Este navegador la recordará para la próxima vez.</p>
+      <div class="calib-row">
+        <label class="btn file-btn" for="audio-file">🎵 Cargar la canción desde este dispositivo</label>
+        <input type="file" id="audio-file" accept="audio/*" hidden>
+        <button class="btn ghost" id="audio-clear" hidden>Quitar canción</button>
+      </div>
+      <audio id="audio-el" controls hidden></audio>
+      <div id="audio-status" class="small"></div>
+    </div>
+
+    <div class="source-box">
+      <h3>Opción B · Reproductor de Spotify</h3>
+      <div id="spotify-player"></div>
+      <p class="note small" id="preview-note">Si no tienes sesión iniciada en Spotify, solo se escucharán 30 segundos.
+        Inicia sesión desde el propio reproductor para oír la canción completa.</p>
+    </div>
+
+    <div class="source-box manual" id="manual-box">
+      <h3>Opción C · Sin reproductor</h3>
+      <p class="small">Pon la canción en tu app de Spotify
+        (<a href="https://open.spotify.com/track/7n53166Bqza1EF4vMjMU4x" target="_blank" rel="noopener">De Camino a la Vereda</a>),
+        dale play y pulsa este botón justo en un <strong>1</strong>. La cuadrícula seguirá el ritmo por su cuenta.</p>
+      <div class="calib-row">
+        <button class="btn" id="manual-start">▶ Empezar en el 1</button>
+        <button class="btn ghost" id="manual-stop" hidden>■ Detener</button>
+      </div>
+    </div>
+
+    <div id="sync-status" class="status">Elige una fuente de audio y dale play.</div>
 
     <div class="pulse-wrap small-pulse"><div id="pulse6"></div></div>
     <div id="grid6"></div>
@@ -167,16 +198,6 @@
       <label><input type="checkbox" data-layer="bajo" checked> Bajo</label>
       <label><input type="checkbox" data-layer="bongo"> Bongó</label>
       <label><input type="checkbox" data-layer="paso" checked> Pasos</label>
-    </div>
-
-    <div class="manual" id="manual-box">
-      <p class="small"><strong>¿No carga el reproductor?</strong> Abre la canción en tu app de Spotify
-        (<a href="https://open.spotify.com/track/7n53166Bqza1EF4vMjMU4x" target="_blank" rel="noopener">De Camino a la Vereda</a>),
-        dale play y pulsa este botón justo en un <strong>1</strong>. La cuadrícula seguirá el ritmo por su cuenta.</p>
-      <div class="calib-row">
-        <button class="btn" id="manual-start">▶ Empezar en el 1</button>
-        <button class="btn ghost" id="manual-stop" hidden>■ Detener</button>
-      </div>
     </div>
 
     <div class="calib">
@@ -213,6 +234,7 @@
 <script src="js/clock.js"></script>
 <script src="js/visuals.js"></script>
 <script src="js/spotify.js"></script>
+<script src="js/audio.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

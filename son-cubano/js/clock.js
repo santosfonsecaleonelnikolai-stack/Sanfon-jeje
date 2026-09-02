@@ -28,6 +28,7 @@ SC.Clock.prototype.setOffset = function (ms) { this.offset = Number(ms) || 0; };
 /* Modo interno */
 SC.Clock.prototype.start = function () {
   this.source = 'internal';
+  this.posSource = null;
   this.lastPos = this.offset;
   this.lastAt = performance.now();
   this.running = true;
@@ -42,7 +43,11 @@ SC.Clock.prototype.update = function (positionMs, isPaused) {
   this.running = !isPaused;
 };
 
+/* Fuente de posición exacta (p. ej. audio.currentTime); anula la interpolación. */
+SC.Clock.prototype.setPositionSource = function (fn) { this.posSource = fn || null; };
+
 SC.Clock.prototype.position = function () {
+  if (this.posSource) return this.posSource();
   if (!this.running) return this.lastPos;
   return this.lastPos + (performance.now() - this.lastAt);
 };

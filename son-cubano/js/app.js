@@ -106,7 +106,7 @@
   var clock6 = new SC.Clock({ bpm: saved.bpm || 100, offset: saved.offset || 0 });
   var bpmInput = document.getElementById('bpm6');
   var offsetVal = document.getElementById('offset-val');
-  var status = document.getElementById('spotify-status');
+  var status = document.getElementById('sync-status');
 
   function saveCalib() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify({ bpm: clock6.bpm, offset: clock6.offset })); } catch (e) {}
@@ -129,20 +129,63 @@
     cb.addEventListener('change', function () { grid6.setLayerVisible(cb.dataset.layer, cb.checked); });
   });
 
+  /* Fuentes de tiempo para la sección 6: archivo local > Spotify > manual. */
   var manual = false;
   var manualStart = document.getElementById('manual-start');
   var manualStop = document.getElementById('manual-stop');
+  var audioEl = document.getElementById('audio-el');
+  var audioStatus = document.getElementById('audio-status');
+  var audioClear = document.getElementById('audio-clear');
+
+  function setStatus(txt, cls) { status.textContent = txt; status.className = 'status' + (cls ? ' ' + cls : ''); }
+
+  function stopManual(silent) {
+    if (!manual) return;
+    manual = false;
+    clock6.stop();
+    renderers6.forEach(function (r) { r.render(null); });
+    manualStart.hidden = false; manualStop.hidden = true;
+    if (!silent) setStatus('Modo manual detenido.');
+  }
+
+  var localAudio = new SC.LocalAudio(document.getElementById('audio-file'), audioEl, clock6, {
+    onLoad: function (file, isNew) {
+      audioStatus.textContent = '🎵 ' + file.name + (isNew ? '' : ' · recordada de la última vez');
+      audioClear.hidden = false;
+      if (isNew) setStatus('Archivo cargado. Dale play al reproductor de arriba.', 'ok');
+    },
+    onStored: function (ok) { if (ok) audioStatus.textContent += ' · guardada en este navegador'; },
+    onPlay: function () {
+      // El archivo pasa a ser la fuente exacta de tiempo.
+      stopManual(true);
+      if (spotify.controller) spotify.pause();
+      clock6.setPositionSource(function () { return localAudio.position(); });
+    },
+    onSync: function (playing) {
+      if (playing) setStatus('Sonando tu archivo · ' + (localAudio.position() / 1000).toFixed(1) + ' s', 'ok');
+      else setStatus('Archivo en pausa.');
+    },
+    onClear: function () {
+      clock6.setPositionSource(null);
+      renderers6.forEach(function (r) { r.render(null); });
+      audioStatus.textContent = '';
+      audioClear.hidden = true;
+      setStatus('Canción quitada de este navegador.');
+    }
+  });
+  audioClear.addEventListener('click', function () { localAudio.clear(); });
 
   var spotify = new SC.Spotify(document.getElementById('spotify-player'), clock6, {
-    onReady: function () { status.textContent = 'Reproductor listo. Dale play y mira la cuadrícula.'; status.classList.add('ok'); },
+    onReady: function () { if (!localAudio.file) setStatus('Reproductor de Spotify listo. Dale play y mira la cuadrícula.', 'ok'); },
     onUpdate: function (d) {
       if (manual) return false;
-      if (d.isPaused) status.textContent = 'En pausa.';
-      else status.textContent = 'Sonando · ' + (d.position / 1000).toFixed(1) + ' s';
+      if (localAudio.active && !audioEl.paused) return false;   // el archivo manda mientras suena
+      if (d.isPaused) { if (localAudio.active) return false; setStatus('Spotify en pausa.'); return; }
+      if (localAudio.active) { audioEl.pause(); localAudio.active = false; clock6.setPositionSource(null); }
+      setStatus('Sonando en Spotify · ' + (d.position / 1000).toFixed(1) + ' s', 'ok');
     },
     onError: function () {
-      status.textContent = 'Aquí no se puede cargar el reproductor de Spotify. Usa el modo manual de abajo.';
-      status.classList.add('err');
+      setStatus('Aquí no se puede cargar el reproductor de Spotify. Usa la opción A (tu archivo) o la C (sin reproductor).', 'err');
       document.getElementById('spotify-player').hidden = true;
     }
   });
@@ -151,25 +194,19 @@
   manualStart.addEventListener('click', function () {
     manual = true;
     if (spotify.controller) spotify.pause();
+    if (localAudio.file) { audioEl.pause(); localAudio.active = false; }
+    clock6.setPositionSource(null);
     clock6.setOffset(0);
     clock6.start();
     saveCalib();
     manualStart.hidden = true; manualStop.hidden = false;
-    status.textContent = 'Modo manual: la cuadrícula sigue el ritmo por su cuenta a ' + Math.round(clock6.bpm) + ' BPM.';
-    status.className = 'status ok';
+    setStatus('Modo manual: la cuadrícula sigue el ritmo por su cuenta a ' + Math.round(clock6.bpm) + ' BPM.', 'ok');
   });
-  manualStop.addEventListener('click', function () {
-    manual = false;
-    clock6.stop();
-    renderers6.forEach(function (r) { r.render(null); });
-    manualStart.hidden = false; manualStop.hidden = true;
-    status.textContent = 'Modo manual detenido.';
-    status.className = 'status';
-  });
+  manualStop.addEventListener('click', function () { stopManual(false); });
 
   // Calibración
   document.getElementById('mark-one').addEventListener('click', function () {
-    if (!clock6.running) { status.textContent = 'Primero pon la canción (o el modo manual) en marcha.'; return; }
+    if (!clock6.running) { setStatus('Primero pon la canción (o el modo manual) en marcha.'); return; }
     clock6.setOffset(clock6.position());
     saveCalib();
     flash(this);

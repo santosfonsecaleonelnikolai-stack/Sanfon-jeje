@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El contratiempo del son cubano</title>
+<style>
+:root {
+  --bg: #fff8ec;
+  --bg-alt: #fdebd0;
+  --ink: #2b1d14;
+  --muted: #6b5847;
+  --card: #ffffff;
+  --line: #e9d6b8;
+  --pulso: #d7263d;
+  --contra: #0aa6a0;
+  --clave: #f2a900;
+  --bajo: #6a3fb5;
+  --bongo: #c96a1b;
+  --paso: #1f7a3e;
+  --accent: #d7263d;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+}
+h1, h2, h3 { line-height: 1.15; margin: 0 0 .5em; }
+h1 { font-size: clamp(2rem, 6vw, 3.6rem); }
+h2 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); }
+h3 { font-size: 1.2rem; margin-top: 1.4em; }
+p { margin: 0 0 1em; }
+.small, .note { font-size: .95rem; color: var(--muted); }
+.note { background: #fff3cd; border-left: 4px solid var(--clave); padding: .6em .9em; border-radius: 6px; color: var(--ink); }
+.hl { color: var(--accent); }
+.callout {
+  background: #e6f7f6; border-left: 5px solid var(--contra);
+  padding: .8em 1em; border-radius: 8px;
+}
+kbd { background: #eee; border: 1px solid #ccc; border-radius: 4px; padding: 0 .4em; font-family: inherit; }
+
+/* Hero */
+.hero {
+  padding: 3rem 1.5rem 2rem;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; color: var(--muted); font-weight: 600; }
+.lead { font-size: 1.15rem; max-width: 700px; margin: 0 auto 1.5rem; }
+.steps-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
+.steps-nav a {
+  text-decoration: none; color: var(--ink); background: var(--card);
+  border: 1px solid var(--line); border-radius: 999px; padding: .35em .9em; font-size: .9rem; font-weight: 600;
+}
+.steps-nav a:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Lecciones */
+.lesson {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 2rem;
+  padding: 3rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.lesson.alt { background: var(--bg-alt); max-width: none; }
+.lesson.alt > * { max-width: 1200px; }
+.lesson.alt { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
+@media (min-width: 900px) {
+  .lesson.alt { padding-left: max(1.5rem, calc((100% - 1200px) / 2 + 1.5rem)); padding-right: max(1.5rem, calc((100% - 1200px) / 2 + 1.5rem)); }
+}
+.lesson-text { position: relative; }
+.num {
+  display: inline-block; width: 2.2rem; height: 2.2rem; line-height: 2.2rem; text-align: center;
+  background: var(--accent); color: #fff; border-radius: 50%; font-weight: 800; margin-bottom: .6rem;
+}
+.lesson-visual {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.2rem;
+  box-shadow: 0 6px 24px rgba(60, 30, 0, .06);
+  min-width: 0;
+}
+
+/* Controles */
+.controls { display: flex; flex-wrap: wrap; gap: .8rem 1.2rem; align-items: center; margin-top: 1rem; }
+.controls label { font-size: .9rem; color: var(--muted); display: flex; gap: .5em; align-items: center; }
+.btn {
+  border: none; background: var(--ink); color: #fff; font: inherit; font-weight: 700;
+  padding: .55em 1.1em; border-radius: 10px; cursor: pointer; transition: transform .08s, background .15s;
+}
+.btn:hover { background: #000; }
+.btn:active, .btn.flash { transform: scale(.96); background: var(--accent); }
+.btn.play { background: var(--accent); }
+.btn.play:hover { background: #b51e31; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn.ghost:hover { border-color: var(--ink); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.seg-btn { border: none; background: #fff; font: inherit; font-weight: 600; padding: .5em .9em; cursor: pointer; color: var(--muted); }
+.seg-btn.active { background: var(--ink); color: #fff; }
+input[type=range] { accent-color: var(--accent); }
+input[type=number] { font: inherit; width: 5.5em; padding: .3em .4em; border: 1px solid var(--line); border-radius: 6px; }
+
+/* Pulso */
+.pulse-wrap { display: flex; justify-content: center; padding: 1rem 0 1.5rem; }
+.pulse {
+  width: 140px; height: 140px; border-radius: 50%;
+  background: var(--pulso); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 10px rgba(215, 38, 61, .15);
+  transition: background .1s;
+  will-change: transform;
+}
+.pulse.is-off { background: var(--contra); box-shadow: 0 0 0 10px rgba(10, 166, 160, .15); }
+.pulse.is-one { box-shadow: 0 0 0 16px rgba(215, 38, 61, .25); }
+.pulse-num { font-size: 3.4rem; font-weight: 900; }
+.small-pulse .pulse { width: 90px; height: 90px; }
+.small-pulse .pulse-num { font-size: 2.2rem; }
+
+/* Cuadrícula */
+.grid { display: flex; flex-direction: column; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+.grid-row[hidden] { display: none; }
+.grid-row { display: grid; grid-template-columns: 11rem repeat(16, minmax(1.5rem, 1fr)); gap: 3px; align-items: center; }
+.grid-label { font-size: .82rem; font-weight: 700; color: var(--muted); padding-right: .5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cell {
+  aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  background: #f3ece0; position: relative; transition: background .08s, transform .08s;
+}
+.cell.onbeat { background: #f0e4d2; }
+.cell.bar-start { box-shadow: inset 3px 0 0 var(--line); }
+.cell.head { background: transparent; font-weight: 800; font-size: .95rem; color: var(--pulso); }
+.cell.head.offbeat { color: var(--contra); font-weight: 600; }
+.cell.head.active { background: #fff1c2; border-radius: 6px; }
+.cell .dot { width: 62%; height: 62%; border-radius: 50%; background: transparent; transition: transform .1s; }
+.cell.on .dot { background: var(--c, var(--ink)); }
+.cell.accent .dot { box-shadow: 0 0 0 3px rgba(0,0,0,.15); }
+.cell.active { background: #fff1c2; }
+.cell.hit { transform: scale(1.12); background: #ffe08a; }
+.cell.hit .dot { transform: scale(1.15); }
+.layer-pulso { --c: var(--pulso); }
+.layer-contra { --c: var(--contra); }
+.layer-clave { --c: var(--clave); }
+.layer-bajo { --c: var(--bajo); }
+.layer-bongo { --c: var(--bongo); }
+.layer-paso { --c: var(--paso); }
+
+.tag { padding: 0 .4em; border-radius: 4px; color: #fff; font-weight: 700; }
+.tag-pulso { background: var(--pulso); }
+.tag-contra { background: var(--contra); }
+
+/* Pies */
+.feet { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: .5rem 0 1rem; position: relative; }
+.foot {
+  height: 110px; border-radius: 55px 55px 40px 40px / 70px 70px 40px 40px;
+  background: #ece3d3; border: 3px solid transparent;
+  display: flex; align-items: flex-end; justify-content: center; padding-bottom: .6rem;
+  font-weight: 800; color: var(--muted); transition: background .08s, transform .08s, border-color .08s;
+}
+.foot.step { background: var(--paso); color: #fff; transform: scale(1.06); border-color: #145a2c; }
+.foot-msg { grid-column: 1 / -1; text-align: center; font-weight: 700; color: var(--muted); min-height: 1.5em; }
+
+/* Sección canción */
+#spotify-player { border-radius: 12px; overflow: hidden; margin-bottom: .5rem; min-height: 152px; }
+.status { font-size: .9rem; color: var(--muted); margin-bottom: 1rem; }
+.status.ok { color: var(--paso); }
+.status.err { color: var(--accent); }
+.layer-toggles { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin: 1rem 0; font-size: .95rem; }
+.layer-toggles label { display: flex; gap: .4em; align-items: center; cursor: pointer; }
+.source-box { border: 1px solid var(--line); border-radius: 12px; padding: .9rem 1rem .6rem; margin-bottom: .8rem; background: #fffdf8; }
+.source-box h3 { margin: 0 0 .4rem; font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.source-box .note { margin: .6rem 0 .4rem; }
+.audio-box { border-color: var(--contra); background: #f2fbfa; }
+.file-btn { display: inline-block; background: var(--contra); }
+.file-btn:hover { background: #078a85; }
+#audio-el { width: 100%; margin: .6rem 0 .3rem; }
+#audio-status { min-height: 1.4em; }
+.manual a { color: var(--accent); }
+.calib { border-top: 1px dashed var(--line); padding-top: 1rem; }
+.calib-row { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; margin-bottom: .7rem; }
+.calib label { font-size: .9rem; color: var(--muted); display: flex; gap: .5em; align-items: center; }
+.game { border-top: 1px dashed var(--line); margin-top: 1rem; padding-top: .5rem; text-align: center; }
+.tap-btn { font-size: 1.6rem; padding: .7em 2em; background: var(--contra); border-radius: 999px; }
+.tap-btn:hover { background: #078a85; }
+.game-result { font-size: 1.3rem; font-weight: 800; margin-top: .8rem; min-height: 1.6em; }
+.game-result.good { color: var(--paso); }
+.game-result.early { color: var(--bajo); }
+.game-result.late { color: var(--accent); }
+.game-score { color: var(--muted); }
+
+footer { text-align: center; padding: 2rem 1rem 3rem; color: var(--muted); font-size: .9rem; }
+
+@media (max-width: 860px) {
+  .lesson, .lesson.alt { grid-template-columns: 1fr; padding: 2.2rem 1rem; gap: 1.2rem; }
+  .grid-row { grid-template-columns: 6.5rem repeat(16, minmax(1.15rem, 1fr)); }
+  .grid-label { font-size: .72rem; }
+  .cell.head { font-size: .8rem; }
+  body { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cell, .foot, .btn { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="eyebrow">Una guía visual para quien nunca ha estudiado música</p>
+  <h1>El <span class="hl">contratiempo</span> del son cubano</h1>
+  <p class="lead">
+    Con la canción <strong>“De Camino a la Vereda”</strong> (Buena Vista Social Club)
+    vas a <em>ver</em> dónde cae el ritmo, por qué el son se siente “adelantado”
+    y cómo bailarlo sin perderte.
+  </p>
+  <nav class="steps-nav" aria-label="Lecciones">
+    <a href="#pulso">1 · El pulso</a>
+    <a href="#y">2 · El “y”</a>
+    <a href="#clave">3 · La clave</a>
+    <a href="#bajo">4 · El bajo</a>
+    <a href="#baile">5 · El paso</a>
+    <a href="#cancion">6 · La canción</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- 1. EL PULSO -->
+<section id="pulso" class="lesson">
+  <div class="lesson-text">
+    <span class="num">1</span>
+    <h2>El pulso: los “pasos” de la música</h2>
+    <p>Toda canción tiene un latido constante, como cuando caminas: <strong>1, 2, 3, 4</strong>, y vuelve a empezar.
+      A cada latido lo llamamos <strong>tiempo</strong>. El <strong>1</strong> es el más importante: ahí “empieza” cada vuelta.</p>
+    <p>Pulsa ▶ y mira cómo el círculo late. Intenta dar palmadas con cada número.</p>
+  </div>
+  <div class="lesson-visual">
+    <div class="pulse-wrap"><div id="pulse1"></div></div>
+    <div id="grid1"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="pulso">▶ Reproducir</button>
+      <label>Velocidad <input type="range" class="bpm" data-demo="pulso" min="60" max="140" value="96"> <span class="bpm-val">96</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 2. EL "Y" -->
+<section id="y" class="lesson alt">
+  <div class="lesson-text">
+    <span class="num">2</span>
+    <h2>El “y”: lo que hay entre los pasos</h2>
+    <p>Entre un tiempo y el siguiente hay un espacio. Lo contamos así: <strong>1 <em>y</em> 2 <em>y</em> 3 <em>y</em> 4 <em>y</em></strong>.</p>
+    <p class="callout">Ese “<strong>y</strong>” es el <strong>contratiempo</strong>. Tocar “a contratiempo” significa tocar
+      <em>entre</em> los pasos, justo cuando el pie está en el aire.</p>
+    <p>Los tiempos van en <span class="tag tag-pulso">rojo</span> y los contratiempos en <span class="tag tag-contra">turquesa</span>.
+      Pulsa ▶ y prueba a dar palmadas solo en los “y”.</p>
+  </div>
+  <div class="lesson-visual">
+    <div class="pulse-wrap"><div id="pulse2"></div></div>
+    <div id="grid2"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="y">▶ Reproducir</button>
+      <label>Velocidad <input type="range" class="bpm" data-demo="y" min="60" max="140" value="90"> <span class="bpm-val">90</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 3. LA CLAVE -->
+<section id="clave" class="lesson">
+  <div class="lesson-text">
+    <span class="num">3</span>
+    <h2>La clave: el esqueleto del son</h2>
+    <p>La <strong>clave</strong> son dos palitos de madera que tocan siempre el mismo patrón de <strong>5 golpes</strong> repartidos en dos vueltas de 4.
+      Todo el son se organiza alrededor de ella.</p>
+    <p>Fíjate bien: en el lado de 3 golpes, el <strong>segundo golpe cae en un “y”</strong>. Es el contratiempo en acción:
+      ese golpe “fuera de sitio” es lo que le da el sabor.</p>
+    <p>Se puede tocar empezando por el lado de 3 (<strong>3-2</strong>) o por el de 2 (<strong>2-3</strong>). “De Camino a la Vereda” va en 2-3.</p>
+  </div>
+  <div class="lesson-visual">
+    <div id="grid3"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="clave">▶ Reproducir</button>
+      <div class="seg" role="group" aria-label="Dirección de la clave">
+        <button class="seg-btn" data-clave="clave32">3-2</button>
+        <button class="seg-btn active" data-clave="clave23">2-3</button>
+      </div>
+      <label>Velocidad <input type="range" class="bpm" data-demo="clave" min="60" max="140" value="96"> <span class="bpm-val">96</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 4. EL BAJO -->
+<section id="bajo" class="lesson alt">
+  <div class="lesson-text">
+    <span class="num">4</span>
+    <h2>El bajo anticipado: por qué el son “se adelanta”</h2>
+    <p>En casi toda la música (pop, rock, reguetón) el bajo golpea <strong>en el 1</strong>, el paso fuerte. Es predecible y cómodo.</p>
+    <p>En el son, el bajo hace algo distinto: toca en el <strong>“y” del 2</strong> y en el <strong>4</strong>, y <strong>calla en el 1</strong>.
+      Se llama <strong>tumbao</strong> o bajo anticipado. El bajo “llega antes” de lo que esperas, y por eso el son parece flotar y empujar a la vez.</p>
+    <p>Compara las dos filas: arriba el bajo “normal”, abajo el bajo del son. Escucha el 1 en tu cabeza… y nota cómo el bajo de son no está ahí.</p>
+  </div>
+  <div class="lesson-visual">
+    <div id="grid4"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="bajo">▶ Reproducir</button>
+      <label>Velocidad <input type="range" class="bpm" data-demo="bajo" min="60" max="140" value="96"> <span class="bpm-val">96</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 5. EL PASO -->
+<section id="baile" class="lesson">
+  <div class="lesson-text">
+    <span class="num">5</span>
+    <h2>El paso: bailar a contratiempo</h2>
+    <p>En la salsa de línea se pisa en el <strong>1</strong>, <strong>2</strong>, <strong>3</strong> y se hace pausa en el <strong>4</strong>.</p>
+    <p>En el son cubano tradicional es al revés: <strong>pausa en el 1</strong> y pasos en <strong>2, 3, 4</strong>.
+      Como el pie <em>no</em> pisa en el tiempo fuerte, se dice que el son se baila <strong>“a contratiempo”</strong>.
+      Es exactamente lo mismo que hace el bajo: dejar el 1 vacío.</p>
+    <p class="callout">Truco: espera un instante en el 1 (como si dudaras) y luego pisa 2-3-4. Sigue el bajo, no la voz.</p>
+  </div>
+  <div class="lesson-visual">
+    <div id="feet5"></div>
+    <div id="grid5"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="baile">▶ Reproducir</button>
+      <div class="seg" role="group" aria-label="Estilo de paso">
+        <button class="seg-btn" data-paso="salsa">Salsa (en 1)</button>
+        <button class="seg-btn active" data-paso="son">Son (contratiempo)</button>
+      </div>
+      <label>Velocidad <input type="range" class="bpm" data-demo="baile" min="60" max="140" value="90"> <span class="bpm-val">90</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 6. LA CANCIÓN -->
+<section id="cancion" class="lesson alt song">
+  <div class="lesson-text">
+    <span class="num">6</span>
+    <h2>Ahora con la canción de verdad</h2>
+    <p>La cuadrícula avanza al ritmo de <strong>“De Camino a la Vereda”</strong> y muestra todas las capas a la vez.
+      Elige cómo quieres que suene: con un archivo de la canción que tengas en tu dispositivo (opción A),
+      con el reproductor de Spotify (opción B) o siguiendo el ritmo por su cuenta mientras la escuchas en otro sitio (opción C).</p>
+    <p class="note">Spotify no permite descargar sus canciones como archivo. Para la opción A necesitas una copia propia,
+      por ejemplo un MP3 comprado en una tienda de música o extraído de un CD.</p>
+    <h3>Calibración</h3>
+    <p class="small">El audio nos dice en qué segundo va la canción, pero no dónde cae el “1”. Si ves que la cuadrícula no coincide:</p>
+    <ol class="small">
+      <li>Con la canción sonando, pulsa <strong>“Marcar el 1”</strong> justo cuando sientas el tiempo fuerte.</li>
+      <li>Si va rápido o lento, pulsa <strong>“Tap tempo”</strong> varias veces al ritmo.</li>
+      <li>Ajusta fino con los botones <strong>±20 ms</strong>.</li>
+    </ol>
+  </div>
+  <div class="lesson-visual">
+    <div class="source-box audio-box">
+      <h3>Opción A · Tu archivo de la canción</h3>
+      <p class="small">Si tienes la canción como archivo (MP3, M4A, WAV…), cárgala aquí. Se reproduce en tu navegador,
+        <strong>no se sube a ningún sitio</strong> y la sincronía es exacta. Este navegador la recordará para la próxima vez.</p>
+      <div class="calib-row">
+        <label class="btn file-btn" for="audio-file">🎵 Cargar la canción desde este dispositivo</label>
+        <input type="file" id="audio-file" accept="audio/*" hidden>
+        <button class="btn ghost" id="audio-clear" hidden>Quitar canción</button>
+      </div>
+      <audio id="audio-el" controls hidden></audio>
+      <div id="audio-status" class="small"></div>
+    </div>
+
+    <div class="source-box">
+      <h3>Opción B · Reproductor de Spotify</h3>
+      <div id="spotify-player"></div>
+      <p class="note small" id="preview-note">Si no tienes sesión iniciada en Spotify, solo se escucharán 30 segundos.
+        Inicia sesión desde el propio reproductor para oír la canción completa.</p>
+    </div>
+
+    <div class="source-box manual" id="manual-box">
+      <h3>Opción C · Sin reproductor</h3>
+      <p class="small">Pon la canción en tu app de Spotify
+        (<a href="https://open.spotify.com/track/7n53166Bqza1EF4vMjMU4x" target="_blank" rel="noopener">De Camino a la Vereda</a>),
+        dale play y pulsa este botón justo en un <strong>1</strong>. La cuadrícula seguirá el ritmo por su cuenta.</p>
+      <div class="calib-row">
+        <button class="btn" id="manual-start">▶ Empezar en el 1</button>
+        <button class="btn ghost" id="manual-stop" hidden>■ Detener</button>
+      </div>
+    </div>
+
+    <div id="sync-status" class="status">Elige una fuente de audio y dale play.</div>
+
+    <div class="pulse-wrap small-pulse"><div id="pulse6"></div></div>
+    <div id="grid6"></div>
+
+    <div class="layer-toggles" id="layer-toggles">
+      <label><input type="checkbox" data-layer="pulso" checked> Pulso</label>
+      <label><input type="checkbox" data-layer="contra" checked> Contratiempo</label>
+      <label><input type="checkbox" data-layer="clave" checked> Clave</label>
+      <label><input type="checkbox" data-layer="bajo" checked> Bajo</label>
+      <label><input type="checkbox" data-layer="bongo"> Bongó</label>
+      <label><input type="checkbox" data-layer="paso" checked> Pasos</label>
+    </div>
+
+    <div class="calib">
+      <div class="calib-row">
+        <button class="btn" id="mark-one">Marcar el 1</button>
+        <button class="btn" id="tap-tempo">Tap tempo</button>
+        <button class="btn ghost" id="off-minus">−20 ms</button>
+        <button class="btn ghost" id="off-plus">+20 ms</button>
+      </div>
+      <div class="calib-row">
+        <label>BPM <input type="number" id="bpm6" min="40" max="200" step="0.1" value="100"></label>
+        <label>Inicio del 1 <span id="offset-val">0</span> ms</label>
+        <button class="btn ghost" id="calib-reset">Restablecer</button>
+      </div>
+    </div>
+
+    <div class="game">
+      <h3>Juego: toca en el contratiempo</h3>
+      <p class="small">Con la canción sonando, pulsa <kbd>espacio</kbd> o el botón grande en cada <strong>“y”</strong>.</p>
+      <button class="btn tap-btn" id="tap-game">¡TOCA!</button>
+      <div class="game-result" id="game-result">—</div>
+      <div class="game-score" id="game-score"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Hecho para aprender a sentir el son. Canción: “De Camino a la Vereda”, Buena Vista Social Club, vía Spotify.</p>
+</footer>
+
+<script>
+/* Patrones rítmicos en una cuadrícula de 16 pasos (2 compases de 4/4 en corcheas).
+   Paso par  = tiempo (1, 2, 3, 4)   -> "a tiempo"
+   Paso impar = "y" (entre tiempos)  -> "contratiempo" */
+window.SC = window.SC || {};
+
+SC.STEPS = 16;
+
+SC.stepLabel = function (i) {
+  var beat = Math.floor((i % 8) / 2) + 1;
+  return i % 2 === 0 ? String(beat) : 'y';
+};
+
+SC.isOffbeat = function (i) { return i % 2 === 1; };
+
+function fromSteps(list) {
+  var arr = new Array(SC.STEPS).fill(false);
+  list.forEach(function (i) { arr[i] = true; });
+  return arr;
+}
+
+SC.PATTERNS = {
+  pulso:      { nombre: 'Pulso',             color: 'pulso',  pasos: fromSteps([0, 2, 4, 6, 8, 10, 12, 14]) },
+  contra:     { nombre: 'Contratiempo (y)',  color: 'contra', pasos: fromSteps([1, 3, 5, 7, 9, 11, 13, 15]) },
+  clave32:    { nombre: 'Clave 3-2',         color: 'clave',  pasos: fromSteps([0, 3, 6, 10, 12]) },
+  clave23:    { nombre: 'Clave 2-3',         color: 'clave',  pasos: fromSteps([2, 4, 8, 11, 14]) },
+  bajoNormal: { nombre: 'Bajo en el 1',      color: 'bajo',   pasos: fromSteps([0, 4, 8, 12]) },
+  bajoSon:    { nombre: 'Bajo anticipado',   color: 'bajo',   pasos: fromSteps([3, 6, 11, 14]) },
+  bongo:      { nombre: 'Bongó (martillo)',  color: 'bongo',  pasos: fromSteps([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]),
+                acento: fromSteps([6, 14]) },
+  pasoSalsa:  { nombre: 'Paso salsa (en 1)', color: 'paso',   pasos: fromSteps([0, 2, 4, 8, 10, 12]) },
+  pasoSon:    { nombre: 'Paso son (contratiempo)', color: 'paso', pasos: fromSteps([2, 4, 6, 10, 12, 14]) }
+};
+
+/* Secuencia de pies para el baile: por paso, qué pie se mueve (I = izquierdo, D = derecho, null = pausa) */
+SC.PIES = {
+  salsa: [ 'I', null, 'D', null, 'I', null, null, null, 'D', null, 'I', null, 'D', null, null, null ],
+  son:   [ null, null, 'I', null, 'D', null, 'I', null, null, null, 'D', null, 'I', null, 'D', null ]
+};
+/* Reloj musical: convierte una posición en milisegundos a tiempo/paso.
+   Puede alimentarse desde Spotify (update) o correr solo (start). */
+window.SC = window.SC || {};
+
+SC.Clock = function (opts) {
+  opts = opts || {};
+  this.bpm = opts.bpm || 100;
+  this.offset = opts.offset || 0;      // ms donde cae el "1" del primer compás
+  this.lastPos = 0;                    // última posición conocida (ms)
+  this.lastAt = performance.now();     // instante en que se conoció
+  this.running = false;
+};
+
+SC.Clock.prototype.setBpm = function (bpm) {
+  bpm = Math.max(40, Math.min(200, Number(bpm) || 100));
+  // Mantener el paso actual estable al cambiar el tempo en modo interno.
+  var pos = this.position();
+  var beatsSoFar = (pos - this.offset) / (60000 / this.bpm);
+  this.bpm = bpm;
+  if (this.source === 'internal') {
+    this.lastPos = this.offset + beatsSoFar * (60000 / bpm);
+    this.lastAt = performance.now();
+  }
+};
+
+SC.Clock.prototype.setOffset = function (ms) { this.offset = Number(ms) || 0; };
+
+/* Modo interno */
+SC.Clock.prototype.start = function () {
+  this.source = 'internal';
+  this.posSource = null;
+  this.lastPos = this.offset;
+  this.lastAt = performance.now();
+  this.running = true;
+};
+SC.Clock.prototype.stop = function () { this.running = false; };
+
+/* Modo externo (Spotify): informa posición real */
+SC.Clock.prototype.update = function (positionMs, isPaused) {
+  this.source = 'external';
+  this.lastPos = positionMs;
+  this.lastAt = performance.now();
+  this.running = !isPaused;
+};
+
+/* Fuente de posición exacta (p. ej. audio.currentTime); anula la interpolación. */
+SC.Clock.prototype.setPositionSource = function (fn) { this.posSource = fn || null; };
+
+SC.Clock.prototype.position = function () {
+  if (this.posSource) return this.posSource();
+  if (!this.running) return this.lastPos;
+  return this.lastPos + (performance.now() - this.lastAt);
+};
+
+SC.Clock.prototype.beatLength = function () { return 60000 / this.bpm; };
+
+/* Devuelve el estado musical actual */
+SC.Clock.prototype.now = function () {
+  var pos = this.position();
+  var beatLen = this.beatLength();
+  var beat = (pos - this.offset) / beatLen;          // tiempos transcurridos (float)
+  var stepF = beat * 2;                              // corcheas (float)
+  var step16 = ((Math.floor(stepF) % 16) + 16) % 16; // paso 0..15
+  var phase = stepF - Math.floor(stepF);             // 0..1 dentro del paso
+  return { position: pos, beat: beat, step16: step16, phase: phase, stepF: stepF };
+};
+
+/* Desfase (ms) de una posición respecto al contratiempo ("y") más cercano.
+   Negativo = adelantado, positivo = atrasado. */
+SC.Clock.prototype.offbeatError = function (positionMs) {
+  var beatLen = this.beatLength();
+  var half = beatLen / 2;
+  var rel = positionMs - this.offset - half;   // los "y" están a media negra del "1"
+  var k = Math.round(rel / beatLen);
+  return rel - k * beatLen;
+};
+/* Componentes visuales: cuadrícula de 16 pasos, círculo de pulso y pies de baile. */
+window.SC = window.SC || {};
+
+/* Cuadrícula: filas = capas (patrones), columnas = 16 pasos. */
+SC.Grid = function (container, layers, opts) {
+  opts = opts || {};
+  this.el = container;
+  this.layers = layers;          // [{ key, pattern, label }]
+  this.showLabels = opts.showLabels !== false;
+  this.build();
+};
+
+SC.Grid.prototype.build = function () {
+  var self = this;
+  this.el.innerHTML = '';
+  this.el.classList.add('grid');
+  this.cols = [];
+
+  // Fila de etiquetas 1 y 2 y 3 y 4 y
+  var head = document.createElement('div');
+  head.className = 'grid-row grid-head';
+  var hl = document.createElement('div'); hl.className = 'grid-label'; head.appendChild(hl);
+  for (var i = 0; i < SC.STEPS; i++) {
+    var c = document.createElement('div');
+    c.className = 'cell head ' + (SC.isOffbeat(i) ? 'offbeat' : 'onbeat');
+    if (i % 8 === 0) c.classList.add('bar-start');
+    c.textContent = SC.stepLabel(i);
+    head.appendChild(c);
+  }
+  this.el.appendChild(head);
+  this.head = head;
+
+  this.rows = this.layers.map(function (layer) {
+    var row = document.createElement('div');
+    row.className = 'grid-row layer-' + layer.pattern.color;
+    row.dataset.key = layer.key;
+    var label = document.createElement('div');
+    label.className = 'grid-label';
+    label.textContent = layer.label || layer.pattern.nombre;
+    row.appendChild(label);
+    var cells = [];
+    for (var i = 0; i < SC.STEPS; i++) {
+      var c = document.createElement('div');
+      c.className = 'cell ' + (SC.isOffbeat(i) ? 'offbeat' : 'onbeat');
+      if (i % 8 === 0) c.classList.add('bar-start');
+      if (layer.pattern.pasos[i]) c.classList.add('on');
+      if (layer.pattern.acento && layer.pattern.acento[i]) c.classList.add('accent');
+      var dot = document.createElement('span'); dot.className = 'dot';
+      c.appendChild(dot);
+      row.appendChild(c);
+      cells.push(c);
+    }
+    self.el.appendChild(row);
+    return { layer: layer, el: row, cells: cells };
+  });
+  this.current = -1;
+};
+
+SC.Grid.prototype.setLayerVisible = function (key, visible) {
+  this.rows.forEach(function (r) { if (r.layer.key === key) r.el.hidden = !visible; });
+};
+
+SC.Grid.prototype.replaceLayer = function (key, pattern) {
+  this.layers.forEach(function (l) { if (l.key === key) l.pattern = pattern; });
+  var hidden = {};
+  this.rows.forEach(function (r) { hidden[r.layer.key] = r.el.hidden; });
+  this.build();
+  var self = this;
+  Object.keys(hidden).forEach(function (k) { self.setLayerVisible(k, !hidden[k]); });
+};
+
+SC.Grid.prototype.render = function (state) {
+  var step = state ? state.step16 : -1;
+  if (step === this.current) return;
+  var prev = this.current;
+  this.current = step;
+  var self = this;
+  var heads = this.head.children;
+  if (prev >= 0) heads[prev + 1].classList.remove('active');
+  if (step >= 0) heads[step + 1].classList.add('active');
+  this.rows.forEach(function (r) {
+    if (prev >= 0) r.cells[prev].classList.remove('active', 'hit');
+    if (step >= 0) {
+      r.cells[step].classList.add('active');
+      if (r.cells[step].classList.contains('on')) {
+        r.cells[step].classList.add('hit');
+      }
+    }
+  });
+};
+
+SC.Grid.prototype.clear = function () { this.render(null); };
+
+/* Círculo que late con el pulso; muestra el número de tiempo o "y". */
+SC.Pulse = function (el, opts) {
+  opts = opts || {};
+  this.el = el;
+  this.showOffbeats = !!opts.showOffbeats;
+  this.el.classList.add('pulse');
+  this.num = document.createElement('div'); this.num.className = 'pulse-num';
+  this.el.appendChild(this.num);
+  this.last = -1;
+};
+
+SC.Pulse.prototype.render = function (state) {
+  if (!state) { this.num.textContent = ''; this.el.style.transform = ''; return; }
+  var step = state.step16;
+  var isOff = SC.isOffbeat(step);
+  if (step !== this.last) {
+    this.last = step;
+    if (!isOff || this.showOffbeats) {
+      this.num.textContent = SC.stepLabel(step);
+      this.el.classList.toggle('is-off', isOff);
+      this.el.classList.toggle('is-one', step % 8 === 0);
+    }
+  }
+  // Tamaño: "respira" con cada tiempo (o cada paso si se muestran los "y")
+  var phase = this.showOffbeats ? state.phase : ((state.stepF / 2) % 1 + 1) % 1;
+  var scale = 1 + 0.18 * (1 - phase);
+  this.el.style.transform = 'scale(' + scale.toFixed(3) + ')';
+};
+
+/* Pies de baile: dos huellas que se iluminan cuando ese pie pisa. */
+SC.Feet = function (el, seq) {
+  this.el = el;
+  this.seq = seq;
+  this.el.classList.add('feet');
+  this.el.innerHTML =
+    '<div class="foot foot-i"><span>IZQ</span></div>' +
+    '<div class="foot foot-d"><span>DER</span></div>' +
+    '<div class="foot-msg"></div>';
+  this.fi = this.el.querySelector('.foot-i');
+  this.fd = this.el.querySelector('.foot-d');
+  this.msg = this.el.querySelector('.foot-msg');
+  this.last = -1;
+};
+
+SC.Feet.prototype.setSeq = function (seq) { this.seq = seq; };
+
+SC.Feet.prototype.render = function (state) {
+  if (!state) { this.fi.classList.remove('step'); this.fd.classList.remove('step'); this.msg.textContent = ''; return; }
+  var step = state.step16;
+  if (step === this.last) return;
+  this.last = step;
+  var pie = this.seq[step];
+  this.fi.classList.toggle('step', pie === 'I');
+  this.fd.classList.toggle('step', pie === 'D');
+  if (pie) this.msg.textContent = 'Paso en el ' + SC.stepLabel(step);
+  else if (!SC.isOffbeat(step)) this.msg.textContent = 'Pausa en el ' + SC.stepLabel(step);
+};
+/* Integración con la Spotify iFrame API: crea el reproductor y sincroniza el reloj. */
+window.SC = window.SC || {};
+
+SC.TRACK_ID = '7n53166Bqza1EF4vMjMU4x';
+
+SC.Spotify = function (el, clock, callbacks) {
+  this.el = el;
+  this.clock = clock;
+  this.cb = callbacks || {};
+  this.controller = null;
+  this.ready = false;
+  this.loadApi();
+};
+
+SC.Spotify.prototype.loadApi = function () {
+  var self = this;
+  window.onSpotifyIframeApiReady = function (IFrameAPI) {
+    IFrameAPI.createController(self.el, {
+      uri: 'spotify:track:' + SC.TRACK_ID,
+      width: '100%',
+      height: 152
+    }, function (controller) {
+      self.controller = controller;
+      controller.addListener('ready', function () {
+        self.ready = true;
+        if (self.cb.onReady) self.cb.onReady();
+      });
+      controller.addListener('playback_update', function (e) {
+        var d = e.data || {};
+        if (self.cb.onUpdate && self.cb.onUpdate(d) === false) return;
+        self.clock.update(d.position || 0, !!d.isPaused);
+      });
+    });
+  };
+  var s = document.createElement('script');
+  s.src = 'https://open.spotify.com/embed/iframe-api/v1';
+  s.async = true;
+  s.onerror = function () { if (self.cb.onError) self.cb.onError(); };
+  document.head.appendChild(s);
+};
+
+SC.Spotify.prototype.play = function () { if (this.controller) this.controller.play(); };
+SC.Spotify.prototype.pause = function () { if (this.controller) this.controller.pause(); };
+SC.Spotify.prototype.toggle = function () { if (this.controller) this.controller.togglePlay(); };
+SC.Spotify.prototype.restart = function () { if (this.controller) this.controller.restart(); };
+/* Archivo de audio local: se reproduce con <audio>, se recuerda en IndexedDB y
+   entrega la posición exacta al reloj. El archivo nunca sale del dispositivo. */
+window.SC = window.SC || {};
+
+SC.LocalAudio = function (fileInput, audioEl, clock, callbacks) {
+  var self = this;
+  this.input = fileInput;
+  this.audio = audioEl;
+  this.clock = clock;
+  this.cb = callbacks || {};
+  this.file = null;
+  this.active = false;   // true mientras el archivo es la fuente de tiempo
+  this.url = null;
+
+  fileInput.addEventListener('change', function () {
+    var f = fileInput.files && fileInput.files[0];
+    if (f) self.load(f, true);
+  });
+
+  ['play', 'pause', 'seeked', 'timeupdate', 'ended'].forEach(function (ev) {
+    audioEl.addEventListener(ev, function () { self.sync(ev); });
+  });
+
+  this.restore();
+};
+
+SC.LocalAudio.prototype.position = function () { return this.audio.currentTime * 1000; };
+
+SC.LocalAudio.prototype.sync = function (ev) {
+  if (!this.file) return;
+  var playing = !this.audio.paused && !this.audio.ended;
+  if (ev === 'play' && this.cb.onPlay) this.cb.onPlay();
+  this.active = true;
+  this.clock.update(this.position(), !playing);
+  if (this.cb.onSync) this.cb.onSync(playing, ev);
+};
+
+SC.LocalAudio.prototype.load = function (file, save) {
+  var self = this;
+  this.file = file;
+  if (this.url) URL.revokeObjectURL(this.url);
+  this.url = URL.createObjectURL(file);
+  this.audio.src = this.url;
+  this.audio.hidden = false;
+  if (this.cb.onLoad) this.cb.onLoad(file, !!save);
+  if (save) this.store(file).then(function (ok) { if (self.cb.onStored) self.cb.onStored(ok); });
+};
+
+SC.LocalAudio.prototype.clear = function () {
+  this.audio.pause();
+  this.audio.removeAttribute('src');
+  this.audio.load();
+  this.audio.hidden = true;
+  this.file = null;
+  this.active = false;
+  this.input.value = '';
+  this.clock.stop();
+  this.remove();
+  if (this.cb.onClear) this.cb.onClear();
+};
+
+/* --- IndexedDB (con fallos silenciosos) --- */
+SC.LocalAudio.prototype.db = function () {
+  return new Promise(function (resolve) {
+    try {
+      var req = indexedDB.open('son-cubano', 1);
+      req.onupgradeneeded = function () { req.result.createObjectStore('files'); };
+      req.onsuccess = function () { resolve(req.result); };
+      req.onerror = function () { resolve(null); };
+    } catch (e) { resolve(null); }
+  });
+};
+
+SC.LocalAudio.prototype.store = function (file) {
+  return this.db().then(function (db) {
+    if (!db) return false;
+    return new Promise(function (resolve) {
+      try {
+        var tx = db.transaction('files', 'readwrite');
+        tx.objectStore('files').put(file, 'cancion');
+        tx.oncomplete = function () { resolve(true); };
+        tx.onerror = function () { resolve(false); };
+      } catch (e) { resolve(false); }
+    });
+  });
+};
+
+SC.LocalAudio.prototype.remove = function () {
+  return this.db().then(function (db) {
+    if (!db) return;
+    try { db.transaction('files', 'readwrite').objectStore('files').delete('cancion'); } catch (e) {}
+  });
+};
+
+SC.LocalAudio.prototype.restore = function () {
+  var self = this;
+  return this.db().then(function (db) {
+    if (!db) return;
+    try {
+      var req = db.transaction('files', 'readonly').objectStore('files').get('cancion');
+      req.onsuccess = function () { if (req.result) self.load(req.result, false); };
+    } catch (e) {}
+  });
+};
+/* Lógica de la página: demos por lección, sección con Spotify, calibración y juego. */
+(function () {
+  var P = SC.PATTERNS;
+  var STORE_KEY = 'son-cubano-calib';
+
+  /* ---------- Demos con reloj interno (lecciones 1–5) ---------- */
+  var demos = {};
+
+  function makeDemo(name, bpm, renderers) {
+    var clock = new SC.Clock({ bpm: bpm, offset: 0 });
+    demos[name] = { clock: clock, renderers: renderers, playing: false };
+    return demos[name];
+  }
+
+  // 1. Pulso
+  var pulse1 = new SC.Pulse(document.getElementById('pulse1'));
+  var grid1 = new SC.Grid(document.getElementById('grid1'), [
+    { key: 'pulso', pattern: P.pulso, label: 'Tiempos' }
+  ]);
+  makeDemo('pulso', 96, [pulse1, grid1]);
+
+  // 2. El "y"
+  var pulse2 = new SC.Pulse(document.getElementById('pulse2'), { showOffbeats: true });
+  var grid2 = new SC.Grid(document.getElementById('grid2'), [
+    { key: 'pulso', pattern: P.pulso, label: 'Tiempos' },
+    { key: 'contra', pattern: P.contra, label: 'Contratiempos' }
+  ]);
+  makeDemo('y', 90, [pulse2, grid2]);
+
+  // 3. Clave
+  var grid3 = new SC.Grid(document.getElementById('grid3'), [
+    { key: 'pulso', pattern: P.pulso, label: 'Tiempos' },
+    { key: 'clave', pattern: P.clave23, label: 'Clave 2-3' }
+  ]);
+  makeDemo('clave', 96, [grid3]);
+  document.querySelectorAll('[data-clave]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('[data-clave]').forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      var pat = P[b.dataset.clave];
+      grid3.replaceLayer('clave', pat);
+      grid3.rows[1].el.querySelector('.grid-label').textContent = pat.nombre;
+    });
+  });
+
+  // 4. Bajo
+  var grid4 = new SC.Grid(document.getElementById('grid4'), [
+    { key: 'pulso', pattern: P.pulso, label: 'Tiempos' },
+    { key: 'bajoNormal', pattern: P.bajoNormal, label: 'Bajo normal (en 1)' },
+    { key: 'bajoSon', pattern: P.bajoSon, label: 'Bajo de son (antic.)' }
+  ]);
+  makeDemo('bajo', 96, [grid4]);
+
+  // 5. Baile
+  var feet5 = new SC.Feet(document.getElementById('feet5'), SC.PIES.son);
+  var grid5 = new SC.Grid(document.getElementById('grid5'), [
+    { key: 'pulso', pattern: P.pulso, label: 'Tiempos' },
+    { key: 'bajo', pattern: P.bajoSon, label: 'Bajo de son' },
+    { key: 'paso', pattern: P.pasoSon, label: 'Pasos (son)' }
+  ]);
+  makeDemo('baile', 90, [feet5, grid5]);
+  document.querySelectorAll('[data-paso]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('[data-paso]').forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      var son = b.dataset.paso === 'son';
+      feet5.setSeq(son ? SC.PIES.son : SC.PIES.salsa);
+      grid5.replaceLayer('paso', son ? P.pasoSon : P.pasoSalsa);
+      grid5.rows[2].el.querySelector('.grid-label').textContent = son ? 'Pasos (son)' : 'Pasos (salsa)';
+    });
+  });
+
+  // Botones ▶ y sliders de velocidad
+  document.querySelectorAll('.btn.play[data-demo]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var d = demos[btn.dataset.demo];
+      if (d.playing) {
+        d.clock.stop(); d.playing = false;
+        btn.textContent = '▶ Reproducir';
+        d.renderers.forEach(function (r) { r.render(null); });
+      } else {
+        // Solo una demo a la vez
+        Object.keys(demos).forEach(function (k) {
+          if (demos[k].playing) {
+            demos[k].clock.stop(); demos[k].playing = false;
+            demos[k].renderers.forEach(function (r) { r.render(null); });
+            var ob = document.querySelector('.btn.play[data-demo="' + k + '"]');
+            if (ob) ob.textContent = '▶ Reproducir';
+          }
+        });
+        d.clock.start(); d.playing = true;
+        btn.textContent = '⏸ Pausar';
+      }
+    });
+  });
+  document.querySelectorAll('input.bpm[data-demo]').forEach(function (inp) {
+    inp.addEventListener('input', function () {
+      demos[inp.dataset.demo].clock.setBpm(inp.value);
+      inp.parentElement.querySelector('.bpm-val').textContent = inp.value;
+    });
+  });
+
+  /* ---------- Sección 6: Spotify ---------- */
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) {}
+  var clock6 = new SC.Clock({ bpm: saved.bpm || 100, offset: saved.offset || 0 });
+  var bpmInput = document.getElementById('bpm6');
+  var offsetVal = document.getElementById('offset-val');
+  var status = document.getElementById('sync-status');
+
+  function saveCalib() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ bpm: clock6.bpm, offset: clock6.offset })); } catch (e) {}
+    bpmInput.value = Math.round(clock6.bpm * 10) / 10;
+    offsetVal.textContent = Math.round(clock6.offset);
+  }
+  saveCalib();
+
+  var pulse6 = new SC.Pulse(document.getElementById('pulse6'), { showOffbeats: true });
+  var grid6 = new SC.Grid(document.getElementById('grid6'), [
+    { key: 'pulso', pattern: P.pulso, label: 'Tiempos' },
+    { key: 'contra', pattern: P.contra, label: 'Contratiempos' },
+    { key: 'clave', pattern: P.clave23, label: 'Clave 2-3' },
+    { key: 'bajo', pattern: P.bajoSon, label: 'Bajo' },
+    { key: 'bongo', pattern: P.bongo, label: 'Bongó' },
+    { key: 'paso', pattern: P.pasoSon, label: 'Pasos' }
+  ]);
+  grid6.setLayerVisible('bongo', false);
+  document.querySelectorAll('#layer-toggles input').forEach(function (cb) {
+    cb.addEventListener('change', function () { grid6.setLayerVisible(cb.dataset.layer, cb.checked); });
+  });
+
+  /* Fuentes de tiempo para la sección 6: archivo local > Spotify > manual. */
+  var manual = false;
+  var manualStart = document.getElementById('manual-start');
+  var manualStop = document.getElementById('manual-stop');
+  var audioEl = document.getElementById('audio-el');
+  var audioStatus = document.getElementById('audio-status');
+  var audioClear = document.getElementById('audio-clear');
+
+  function setStatus(txt, cls) { status.textContent = txt; status.className = 'status' + (cls ? ' ' + cls : ''); }
+
+  function stopManual(silent) {
+    if (!manual) return;
+    manual = false;
+    clock6.stop();
+    renderers6.forEach(function (r) { r.render(null); });
+    manualStart.hidden = false; manualStop.hidden = true;
+    if (!silent) setStatus('Modo manual detenido.');
+  }
+
+  var localAudio = new SC.LocalAudio(document.getElementById('audio-file'), audioEl, clock6, {
+    onLoad: function (file, isNew) {
+      audioStatus.textContent = '🎵 ' + file.name + (isNew ? '' : ' · recordada de la última vez');
+      audioClear.hidden = false;
+      if (isNew) setStatus('Archivo cargado. Dale play al reproductor de arriba.', 'ok');
+    },
+    onStored: function (ok) { if (ok) audioStatus.textContent += ' · guardada en este navegador'; },
+    onPlay: function () {
+      // El archivo pasa a ser la fuente exacta de tiempo.
+      stopManual(true);
+      if (spotify.controller) spotify.pause();
+      clock6.setPositionSource(function () { return localAudio.position(); });
+    },
+    onSync: function (playing) {
+      if (playing) setStatus('Sonando tu archivo · ' + (localAudio.position() / 1000).toFixed(1) + ' s', 'ok');
+      else setStatus('Archivo en pausa.');
+    },
+    onClear: function () {
+      clock6.setPositionSource(null);
+      renderers6.forEach(function (r) { r.render(null); });
+      audioStatus.textContent = '';
+      audioClear.hidden = true;
+      setStatus('Canción quitada de este navegador.');
+    }
+  });
+  audioClear.addEventListener('click', function () { localAudio.clear(); });
+
+  var spotify = new SC.Spotify(document.getElementById('spotify-player'), clock6, {
+    onReady: function () { if (!localAudio.file) setStatus('Reproductor de Spotify listo. Dale play y mira la cuadrícula.', 'ok'); },
+    onUpdate: function (d) {
+      if (manual) return false;
+      if (localAudio.active && !audioEl.paused) return false;   // el archivo manda mientras suena
+      if (d.isPaused) { if (localAudio.active) return false; setStatus('Spotify en pausa.'); return; }
+      if (localAudio.active) { audioEl.pause(); localAudio.active = false; clock6.setPositionSource(null); }
+      setStatus('Sonando en Spotify · ' + (d.position / 1000).toFixed(1) + ' s', 'ok');
+    },
+    onError: function () {
+      setStatus('Aquí no se puede cargar el reproductor de Spotify. Usa la opción A (tu archivo) o la C (sin reproductor).', 'err');
+      document.getElementById('spotify-player').hidden = true;
+    }
+  });
+
+  // Modo manual: la cuadrícula corre sola desde el momento en que se pulsa el botón (en un "1").
+  manualStart.addEventListener('click', function () {
+    manual = true;
+    if (spotify.controller) spotify.pause();
+    if (localAudio.file) { audioEl.pause(); localAudio.active = false; }
+    clock6.setPositionSource(null);
+    clock6.setOffset(0);
+    clock6.start();
+    saveCalib();
+    manualStart.hidden = true; manualStop.hidden = false;
+    setStatus('Modo manual: la cuadrícula sigue el ritmo por su cuenta a ' + Math.round(clock6.bpm) + ' BPM.', 'ok');
+  });
+  manualStop.addEventListener('click', function () { stopManual(false); });
+
+  // Calibración
+  document.getElementById('mark-one').addEventListener('click', function () {
+    if (!clock6.running) { setStatus('Primero pon la canción (o el modo manual) en marcha.'); return; }
+    clock6.setOffset(clock6.position());
+    saveCalib();
+    flash(this);
+  });
+  var taps = [];
+  document.getElementById('tap-tempo').addEventListener('click', function () {
+    var t = performance.now();
+    if (taps.length && t - taps[taps.length - 1] > 2500) taps = [];
+    taps.push(t);
+    if (taps.length >= 3) {
+      var intervals = [];
+      for (var i = 1; i < taps.length; i++) intervals.push(taps[i] - taps[i - 1]);
+      var avg = intervals.reduce(function (a, b) { return a + b; }, 0) / intervals.length;
+      clock6.setBpm(60000 / avg);
+      saveCalib();
+    }
+    this.textContent = 'Tap tempo (' + taps.length + ')';
+    flash(this);
+  });
+  document.getElementById('off-minus').addEventListener('click', function () { clock6.setOffset(clock6.offset - 20); saveCalib(); });
+  document.getElementById('off-plus').addEventListener('click', function () { clock6.setOffset(clock6.offset + 20); saveCalib(); });
+  bpmInput.addEventListener('change', function () { clock6.setBpm(bpmInput.value); saveCalib(); });
+  document.getElementById('calib-reset').addEventListener('click', function () {
+    clock6.setBpm(100); clock6.setOffset(0); taps = [];
+    document.getElementById('tap-tempo').textContent = 'Tap tempo';
+    saveCalib();
+  });
+
+  function flash(el) { el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 150); }
+
+  // Juego
+  var result = document.getElementById('game-result');
+  var score = document.getElementById('game-score');
+  var hits = 0, total = 0;
+  function tap() {
+    if (!clock6.running) { result.textContent = 'Primero dale play a la canción.'; result.className = 'game-result'; return; }
+    var err = clock6.offbeatError(clock6.position());
+    var tol = clock6.beatLength() * 0.15; // ±15 % del tiempo cuenta como acierto
+    total++;
+    var cls, txt;
+    if (Math.abs(err) <= tol) { hits++; cls = 'good'; txt = '¡A contratiempo! (' + Math.round(err) + ' ms)'; }
+    else if (err < 0) { cls = 'early'; txt = 'Adelantado ' + Math.round(-err) + ' ms'; }
+    else { cls = 'late'; txt = 'Atrasado ' + Math.round(err) + ' ms'; }
+    result.textContent = txt;
+    result.className = 'game-result ' + cls;
+    score.textContent = hits + ' / ' + total + ' aciertos (' + Math.round(100 * hits / total) + ' %)';
+    flash(document.getElementById('tap-game'));
+  }
+  document.getElementById('tap-game').addEventListener('click', tap);
+  document.addEventListener('keydown', function (e) {
+    if (e.code === 'Space' && !/INPUT|BUTTON|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); tap(); }
+  });
+
+  /* ---------- Bucle de animación ---------- */
+  var renderers6 = [pulse6, grid6];
+  function frame() {
+    Object.keys(demos).forEach(function (k) {
+      var d = demos[k];
+      if (d.playing) { var s = d.clock.now(); d.renderers.forEach(function (r) { r.render(s); }); }
+    });
+    if (clock6.running) {
+      var s6 = clock6.now();
+      renderers6.forEach(function (r) { r.render(s6); });
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
