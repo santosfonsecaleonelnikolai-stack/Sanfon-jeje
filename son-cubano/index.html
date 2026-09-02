@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El contratiempo del son cubano</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="hero">
+  <p class="eyebrow">Una guía visual para quien nunca ha estudiado música</p>
+  <h1>El <span class="hl">contratiempo</span> del son cubano</h1>
+  <p class="lead">
+    Con la canción <strong>“De Camino a la Vereda”</strong> (Buena Vista Social Club)
+    vas a <em>ver</em> dónde cae el ritmo, por qué el son se siente “adelantado”
+    y cómo bailarlo sin perderte.
+  </p>
+  <nav class="steps-nav" aria-label="Lecciones">
+    <a href="#pulso">1 · El pulso</a>
+    <a href="#y">2 · El “y”</a>
+    <a href="#clave">3 · La clave</a>
+    <a href="#bajo">4 · El bajo</a>
+    <a href="#baile">5 · El paso</a>
+    <a href="#cancion">6 · La canción</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- 1. EL PULSO -->
+<section id="pulso" class="lesson">
+  <div class="lesson-text">
+    <span class="num">1</span>
+    <h2>El pulso: los “pasos” de la música</h2>
+    <p>Toda canción tiene un latido constante, como cuando caminas: <strong>1, 2, 3, 4</strong>, y vuelve a empezar.
+      A cada latido lo llamamos <strong>tiempo</strong>. El <strong>1</strong> es el más importante: ahí “empieza” cada vuelta.</p>
+    <p>Pulsa ▶ y mira cómo el círculo late. Intenta dar palmadas con cada número.</p>
+  </div>
+  <div class="lesson-visual">
+    <div class="pulse-wrap"><div id="pulse1"></div></div>
+    <div id="grid1"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="pulso">▶ Reproducir</button>
+      <label>Velocidad <input type="range" class="bpm" data-demo="pulso" min="60" max="140" value="96"> <span class="bpm-val">96</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 2. EL "Y" -->
+<section id="y" class="lesson alt">
+  <div class="lesson-text">
+    <span class="num">2</span>
+    <h2>El “y”: lo que hay entre los pasos</h2>
+    <p>Entre un tiempo y el siguiente hay un espacio. Lo contamos así: <strong>1 <em>y</em> 2 <em>y</em> 3 <em>y</em> 4 <em>y</em></strong>.</p>
+    <p class="callout">Ese “<strong>y</strong>” es el <strong>contratiempo</strong>. Tocar “a contratiempo” significa tocar
+      <em>entre</em> los pasos, justo cuando el pie está en el aire.</p>
+    <p>Los tiempos van en <span class="tag tag-pulso">rojo</span> y los contratiempos en <span class="tag tag-contra">turquesa</span>.
+      Pulsa ▶ y prueba a dar palmadas solo en los “y”.</p>
+  </div>
+  <div class="lesson-visual">
+    <div class="pulse-wrap"><div id="pulse2"></div></div>
+    <div id="grid2"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="y">▶ Reproducir</button>
+      <label>Velocidad <input type="range" class="bpm" data-demo="y" min="60" max="140" value="90"> <span class="bpm-val">90</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 3. LA CLAVE -->
+<section id="clave" class="lesson">
+  <div class="lesson-text">
+    <span class="num">3</span>
+    <h2>La clave: el esqueleto del son</h2>
+    <p>La <strong>clave</strong> son dos palitos de madera que tocan siempre el mismo patrón de <strong>5 golpes</strong> repartidos en dos vueltas de 4.
+      Todo el son se organiza alrededor de ella.</p>
+    <p>Fíjate bien: en el lado de 3 golpes, el <strong>segundo golpe cae en un “y”</strong>. Es el contratiempo en acción:
+      ese golpe “fuera de sitio” es lo que le da el sabor.</p>
+    <p>Se puede tocar empezando por el lado de 3 (<strong>3-2</strong>) o por el de 2 (<strong>2-3</strong>). “De Camino a la Vereda” va en 2-3.</p>
+  </div>
+  <div class="lesson-visual">
+    <div id="grid3"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="clave">▶ Reproducir</button>
+      <div class="seg" role="group" aria-label="Dirección de la clave">
+        <button class="seg-btn" data-clave="clave32">3-2</button>
+        <button class="seg-btn active" data-clave="clave23">2-3</button>
+      </div>
+      <label>Velocidad <input type="range" class="bpm" data-demo="clave" min="60" max="140" value="96"> <span class="bpm-val">96</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 4. EL BAJO -->
+<section id="bajo" class="lesson alt">
+  <div class="lesson-text">
+    <span class="num">4</span>
+    <h2>El bajo anticipado: por qué el son “se adelanta”</h2>
+    <p>En casi toda la música (pop, rock, reguetón) el bajo golpea <strong>en el 1</strong>, el paso fuerte. Es predecible y cómodo.</p>
+    <p>En el son, el bajo hace algo distinto: toca en el <strong>“y” del 2</strong> y en el <strong>4</strong>, y <strong>calla en el 1</strong>.
+      Se llama <strong>tumbao</strong> o bajo anticipado. El bajo “llega antes” de lo que esperas, y por eso el son parece flotar y empujar a la vez.</p>
+    <p>Compara las dos filas: arriba el bajo “normal”, abajo el bajo del son. Escucha el 1 en tu cabeza… y nota cómo el bajo de son no está ahí.</p>
+  </div>
+  <div class="lesson-visual">
+    <div id="grid4"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="bajo">▶ Reproducir</button>
+      <label>Velocidad <input type="range" class="bpm" data-demo="bajo" min="60" max="140" value="96"> <span class="bpm-val">96</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 5. EL PASO -->
+<section id="baile" class="lesson">
+  <div class="lesson-text">
+    <span class="num">5</span>
+    <h2>El paso: bailar a contratiempo</h2>
+    <p>En la salsa de línea se pisa en el <strong>1</strong>, <strong>2</strong>, <strong>3</strong> y se hace pausa en el <strong>4</strong>.</p>
+    <p>En el son cubano tradicional es al revés: <strong>pausa en el 1</strong> y pasos en <strong>2, 3, 4</strong>.
+      Como el pie <em>no</em> pisa en el tiempo fuerte, se dice que el son se baila <strong>“a contratiempo”</strong>.
+      Es exactamente lo mismo que hace el bajo: dejar el 1 vacío.</p>
+    <p class="callout">Truco: espera un instante en el 1 (como si dudaras) y luego pisa 2-3-4. Sigue el bajo, no la voz.</p>
+  </div>
+  <div class="lesson-visual">
+    <div id="feet5"></div>
+    <div id="grid5"></div>
+    <div class="controls">
+      <button class="btn play" data-demo="baile">▶ Reproducir</button>
+      <div class="seg" role="group" aria-label="Estilo de paso">
+        <button class="seg-btn" data-paso="salsa">Salsa (en 1)</button>
+        <button class="seg-btn active" data-paso="son">Son (contratiempo)</button>
+      </div>
+      <label>Velocidad <input type="range" class="bpm" data-demo="baile" min="60" max="140" value="90"> <span class="bpm-val">90</span> BPM</label>
+    </div>
+  </div>
+</section>
+
+<!-- 6. LA CANCIÓN -->
+<section id="cancion" class="lesson alt song">
+  <div class="lesson-text">
+    <span class="num">6</span>
+    <h2>Ahora con la canción de verdad</h2>
+    <p>La cuadrícula avanza al ritmo de <strong>“De Camino a la Vereda”</strong> y muestra todas las capas a la vez.
+      Elige cómo quieres que suene: con un archivo de la canción que tengas en tu dispositivo (opción A),
+      con el reproductor de Spotify (opción B) o siguiendo el ritmo por su cuenta mientras la escuchas en otro sitio (opción C).</p>
+    <p class="note">Spotify no permite descargar sus canciones como archivo. Para la opción A necesitas una copia propia,
+      por ejemplo un MP3 comprado en una tienda de música o extraído de un CD.</p>
+    <h3>Calibración</h3>
+    <p class="small">El audio nos dice en qué segundo va la canción, pero no dónde cae el “1”. Si ves que la cuadrícula no coincide:</p>
+    <ol class="small">
+      <li>Con la canción sonando, pulsa <strong>“Marcar el 1”</strong> justo cuando sientas el tiempo fuerte.</li>
+      <li>Si va rápido o lento, pulsa <strong>“Tap tempo”</strong> varias veces al ritmo.</li>
+      <li>Ajusta fino con los botones <strong>±20 ms</strong>.</li>
+    </ol>
+  </div>
+  <div class="lesson-visual">
+    <div class="source-box audio-box">
+      <h3>Opción A · Tu archivo de la canción</h3>
+      <p class="small">Si tienes la canción como archivo (MP3, M4A, WAV…), cárgala aquí. Se reproduce en tu navegador,
+        <strong>no se sube a ningún sitio</strong> y la sincronía es exacta. Este navegador la recordará para la próxima vez.</p>
+      <div class="calib-row">
+        <label class="btn file-btn" for="audio-file">🎵 Cargar la canción desde este dispositivo</label>
+        <input type="file" id="audio-file" accept="audio/*" hidden>
+        <button class="btn ghost" id="audio-clear" hidden>Quitar canción</button>
+      </div>
+      <audio id="audio-el" controls hidden></audio>
+      <div id="audio-status" class="small"></div>
+    </div>
+
+    <div class="source-box">
+      <h3>Opción B · Reproductor de Spotify</h3>
+      <div id="spotify-player"></div>
+      <p class="note small" id="preview-note">Si no tienes sesión iniciada en Spotify, solo se escucharán 30 segundos.
+        Inicia sesión desde el propio reproductor para oír la canción completa.</p>
+    </div>
+
+    <div class="source-box manual" id="manual-box">
+      <h3>Opción C · Sin reproductor</h3>
+      <p class="small">Pon la canción en tu app de Spotify
+        (<a href="https://open.spotify.com/track/7n53166Bqza1EF4vMjMU4x" target="_blank" rel="noopener">De Camino a la Vereda</a>),
+        dale play y pulsa este botón justo en un <strong>1</strong>. La cuadrícula seguirá el ritmo por su cuenta.</p>
+      <div class="calib-row">
+        <button class="btn" id="manual-start">▶ Empezar en el 1</button>
+        <button class="btn ghost" id="manual-stop" hidden>■ Detener</button>
+      </div>
+    </div>
+
+    <div id="sync-status" class="status">Elige una fuente de audio y dale play.</div>
+
+    <div class="pulse-wrap small-pulse"><div id="pulse6"></div></div>
+    <div id="grid6"></div>
+
+    <div class="layer-toggles" id="layer-toggles">
+      <label><input type="checkbox" data-layer="pulso" checked> Pulso</label>
+      <label><input type="checkbox" data-layer="contra" checked> Contratiempo</label>
+      <label><input type="checkbox" data-layer="clave" checked> Clave</label>
+      <label><input type="checkbox" data-layer="bajo" checked> Bajo</label>
+      <label><input type="checkbox" data-layer="bongo"> Bongó</label>
+      <label><input type="checkbox" data-layer="paso" checked> Pasos</label>
+    </div>
+
+    <div class="calib">
+      <div class="calib-row">
+        <button class="btn" id="mark-one">Marcar el 1</button>
+        <button class="btn" id="tap-tempo">Tap tempo</button>
+        <button class="btn ghost" id="off-minus">−20 ms</button>
+        <button class="btn ghost" id="off-plus">+20 ms</button>
+      </div>
+      <div class="calib-row">
+        <label>BPM <input type="number" id="bpm6" min="40" max="200" step="0.1" value="100"></label>
+        <label>Inicio del 1 <span id="offset-val">0</span> ms</label>
+        <button class="btn ghost" id="calib-reset">Restablecer</button>
+      </div>
+    </div>
+
+    <div class="game">
+      <h3>Juego: toca en el contratiempo</h3>
+      <p class="small">Con la canción sonando, pulsa <kbd>espacio</kbd> o el botón grande en cada <strong>“y”</strong>.</p>
+      <button class="btn tap-btn" id="tap-game">¡TOCA!</button>
+      <div class="game-result" id="game-result">—</div>
+      <div class="game-score" id="game-score"></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Hecho para aprender a sentir el son. Canción: “De Camino a la Vereda”, Buena Vista Social Club, vía Spotify.</p>
+</footer>
+
+<script src="js/patterns.js"></script>
+<script src="js/clock.js"></script>
+<script src="js/visuals.js"></script>
+<script src="js/spotify.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
