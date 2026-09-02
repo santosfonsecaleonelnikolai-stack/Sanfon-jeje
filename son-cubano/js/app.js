@@ -129,17 +129,47 @@
     cb.addEventListener('change', function () { grid6.setLayerVisible(cb.dataset.layer, cb.checked); });
   });
 
+  var manual = false;
+  var manualStart = document.getElementById('manual-start');
+  var manualStop = document.getElementById('manual-stop');
+
   var spotify = new SC.Spotify(document.getElementById('spotify-player'), clock6, {
     onReady: function () { status.textContent = 'Reproductor listo. Dale play y mira la cuadrícula.'; status.classList.add('ok'); },
     onUpdate: function (d) {
+      if (manual) return false;
       if (d.isPaused) status.textContent = 'En pausa.';
       else status.textContent = 'Sonando · ' + (d.position / 1000).toFixed(1) + ' s';
     },
-    onError: function () { status.textContent = 'No se pudo cargar Spotify. Revisa tu conexión o un bloqueador de contenido.'; status.classList.add('err'); }
+    onError: function () {
+      status.textContent = 'Aquí no se puede cargar el reproductor de Spotify. Usa el modo manual de abajo.';
+      status.classList.add('err');
+      document.getElementById('spotify-player').hidden = true;
+    }
+  });
+
+  // Modo manual: la cuadrícula corre sola desde el momento en que se pulsa el botón (en un "1").
+  manualStart.addEventListener('click', function () {
+    manual = true;
+    if (spotify.controller) spotify.pause();
+    clock6.setOffset(0);
+    clock6.start();
+    saveCalib();
+    manualStart.hidden = true; manualStop.hidden = false;
+    status.textContent = 'Modo manual: la cuadrícula sigue el ritmo por su cuenta a ' + Math.round(clock6.bpm) + ' BPM.';
+    status.className = 'status ok';
+  });
+  manualStop.addEventListener('click', function () {
+    manual = false;
+    clock6.stop();
+    renderers6.forEach(function (r) { r.render(null); });
+    manualStart.hidden = false; manualStop.hidden = true;
+    status.textContent = 'Modo manual detenido.';
+    status.className = 'status';
   });
 
   // Calibración
   document.getElementById('mark-one').addEventListener('click', function () {
+    if (!clock6.running) { status.textContent = 'Primero pon la canción (o el modo manual) en marcha.'; return; }
     clock6.setOffset(clock6.position());
     saveCalib();
     flash(this);

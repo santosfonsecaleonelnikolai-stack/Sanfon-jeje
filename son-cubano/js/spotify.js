@@ -27,8 +27,8 @@ SC.Spotify.prototype.loadApi = function () {
       });
       controller.addListener('playback_update', function (e) {
         var d = e.data || {};
+        if (self.cb.onUpdate && self.cb.onUpdate(d) === false) return;
         self.clock.update(d.position || 0, !!d.isPaused);
-        if (self.cb.onUpdate) self.cb.onUpdate(d);
       });
     });
   };

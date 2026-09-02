@@ -167,6 +167,8 @@ input[type=number] { font: inherit; width: 5.5em; padding: .3em .4em; border: 1p
 .status.err { color: var(--accent); }
 .layer-toggles { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin: 1rem 0; font-size: .95rem; }
 .layer-toggles label { display: flex; gap: .4em; align-items: center; cursor: pointer; }
+.manual { border-top: 1px dashed var(--line); padding-top: 1rem; margin-bottom: .5rem; }
+.manual a { color: var(--accent); }
 .calib { border-top: 1px dashed var(--line); padding-top: 1rem; }
 .calib-row { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; margin-bottom: .7rem; }
 .calib label { font-size: .9rem; color: var(--muted); display: flex; gap: .5em; align-items: center; }
